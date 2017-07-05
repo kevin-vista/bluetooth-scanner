@@ -1,12 +1,14 @@
 package me.kevinvista.bluetoothscanner;
 
-import android.bluetooth.BluetoothDevice;
-
-public class Device extends BluetoothDevice{
+public class Device{
 
     private String name;
-    private String mac;
-    private String signal;
+
+    private String address;
+
+    private boolean paired;
+
+    private short signal;
 
     public String getName() {
         return name;
@@ -16,26 +18,34 @@ public class Device extends BluetoothDevice{
         this.name = name;
     }
 
-    public String getMac() {
-        return mac;
+    public String getAddress() {
+        return address;
     }
 
-    public void setMac(String mac) {
-        this.mac = mac;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getSignal() {
+    public boolean isPaired() {
+        return paired;
+    }
+
+    public void setPaired(boolean paired) {
+        this.paired = paired;
+    }
+
+    public short getSignal() {
         return signal;
     }
 
-    public void setSignal(String signal) {
+    public void setSignal(short signal) {
         this.signal = signal;
     }
 
-    public Device(String name, String mac, String signal) {
+    public Device(String name, boolean paired, String address, short signal) {
         this.name = name;
-        this.mac = mac;
+        this.paired = paired;
+        this.address = address;
         this.signal = signal;
     }
-
 }

@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="72dp"
     android:layout_margin="5dp"
-    app:cardCornerRadius="@dimen/cardview_default_radius"
-    app:cardElevation="@dimen/cardview_default_elevation">
+    app:cardCornerRadius="4dp"
+    app:cardElevation="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,26 +17,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:textSize="20sp"
-            android:text="Name:"/>
+            android:layout_margin="8dp"
+            android:textSize="22sp"
+            android:text="Unknown"/>
         <TextView
             android:id="@+id/text_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text_name"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
+            android:layout_margin="8dp"
             android:textSize="16sp"
-            android:text="Address:"
+            android:text="00:00:00:00:00:00"
             android:paddingTop="5dp"/>
         <TextView
             android:id="@+id/text_signal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Signal:"
+            android:text="N/A"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:paddingEnd="12dp"
-            android:textSize="18sp"/>
+            android:layout_margin="12dp"
+            android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/text_paired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </RelativeLayout>
 
