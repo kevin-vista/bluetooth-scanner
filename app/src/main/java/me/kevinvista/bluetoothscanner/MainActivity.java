@@ -162,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         if (mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
         }
-        devices.clear();
         mBluetoothAdapter.startDiscovery();
     }
     @Override
@@ -194,10 +193,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 short deviceRSSI = intent.getExtras().getShort(BluetoothDevice.EXTRA_RSSI, (short) 0);
                 Device mDevice = new Device(deviceName, hasPaired, deviceAddress, deviceRSSI);
 
-                if (!containsDevice(mDevice)) {
-                    devices.add(mDevice);
-                    deviceAdapter.notifyDataSetChanged();
-                }
+                devices.remove(scannedDevice(mDevice));
+                devices.add(mDevice);
+                deviceAdapter.notifyDataSetChanged();
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 if (devices.size() == 0) {
                     Log.d(TAG, "onReceive: No device");
@@ -205,13 +203,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         }
 
-        private boolean containsDevice(Device d) {
+        private Device scannedDevice(Device d) {
+            for (Device device : devices) {
+                if (d.getAddress().equals(device.getAddress())) {
+                    return device;
+                }
+            }
+            return null;
+        }
+
+        /*private boolean containsDevice(Device d) {
             for (Device device : devices) {
                 if (d.getAddress().equals(device.getAddress())) {
                     return true;
                 }
             }
             return false;
-        }
+        }*/
     };
 }
