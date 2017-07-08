@@ -40,7 +40,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private int SCAN_MODE_ERROR = 3;
 
-    private boolean registered;
+    private boolean bluetoothReceiverRegistered;
+
+    private boolean scanModeReceiverRegistered;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -108,8 +110,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (registered) {
+        if (bluetoothReceiverRegistered) {
             unregisterReceiver(bluetoothReceiver);
+        }
+        if (scanModeReceiverRegistered) {
+            unregisterReceiver(scanModeReceiver);
         }
     }
 
@@ -127,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 startActivity(visibleIntent);
                 Toast.makeText(this, "Please turn back to grant permission", Toast.LENGTH_LONG).show();
                 //register scanModeReceiver
+                scanModeReceiverRegistered = true;
                 IntentFilter intentFilter = new IntentFilter();
                 intentFilter.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
                 registerReceiver(scanModeReceiver, intentFilter);
@@ -177,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void scanBluetooth() {
-        registered = true;
+        bluetoothReceiverRegistered = true;
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
