@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +35,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public static final String TAG = "MainActivity";
 
     private int ACCESS_COARSE_LOCATION_CODE = 1;
+
+    private int REQUEST_ENABLE_BLUETOOTH = 2;
+
+    private int SCAN_MODE_ERROR = 3;
 
     private boolean registered;
 
@@ -82,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, ACCESS_COARSE_LOCATION_CODE);
             }
         }
+
         initData();
         handler.post(scanTask);
         deviceAdapter.notifyDataSetChanged();
@@ -100,10 +106,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         if (registered) {
-            unregisterReceiver(receiver);
+            unregisterReceiver(bluetoothReceiver);
         }
     }
 
@@ -115,19 +121,36 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.set_visible:
+                Intent visibleIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+                visibleIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 120);
+                startActivity(visibleIntent);
+                Toast.makeText(this, "Please turn back to grant permission", Toast.LENGTH_LONG).show();
+                //register scanModeReceiver
+                IntentFilter intentFilter = new IntentFilter();
+                intentFilter.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
+                registerReceiver(scanModeReceiver, intentFilter);
             case R.id.sys_settings:
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_BLUETOOTH_SETTINGS);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent settingsIntent = new Intent();
+                settingsIntent.setAction(Settings.ACTION_BLUETOOTH_SETTINGS);
+                settingsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
-                    startActivity(intent);
+                    startActivity(settingsIntent);
                 } catch (ActivityNotFoundException e) {
                     e.printStackTrace();
+                    Toast.makeText(this, "Failed going to settings", Toast.LENGTH_SHORT).show();
                 }
+                //Intent intent = new Intent(this, SettingsFragment.class);
+                //startActivity(intent);
                 break;
             case R.id.about:
                 Toast.makeText(this, "Written by kevin-vista", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.feedback:
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto:kevin-vista@outlook.com"));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Feedback - Bluetooth Scanner");
+                startActivity(emailIntent);
             default:
                 break;
         }
@@ -158,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        registerReceiver(receiver, filter);
+        registerReceiver(bluetoothReceiver, filter);
         if (mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
         }
@@ -171,7 +194,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public void run() {
                 if (mBluetoothAdapter != null) {
                     if (!mBluetoothAdapter.isEnabled()) {
-                        mBluetoothAdapter.enable();
+                        //mBluetoothAdapter.enable();
+                        Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(enableIntent, REQUEST_ENABLE_BLUETOOTH);
                     }
                     handler.post(scanTask);}
                 deviceAdapter.notifyDataSetChanged();
@@ -180,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
     }
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive: Execute");
@@ -188,10 +213,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String deviceName = device.getName();
-                boolean  hasPaired = device.getBondState() == BluetoothDevice.BOND_BONDED;
+                boolean  paired = device.getBondState() == BluetoothDevice.BOND_BONDED;
                 String deviceAddress = device.getAddress();
                 short deviceRSSI = intent.getExtras().getShort(BluetoothDevice.EXTRA_RSSI, (short) 0);
-                Device mDevice = new Device(deviceName, hasPaired, deviceAddress, deviceRSSI);
+                Device mDevice = new Device(deviceName, paired, deviceAddress, deviceRSSI);
 
                 devices.remove(scannedDevice(mDevice));
                 devices.add(mDevice);
@@ -220,5 +245,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
             return false;
         }*/
+    };
+
+    private BroadcastReceiver scanModeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, SCAN_MODE_ERROR);
+            if (scanMode == BluetoothAdapter.SCAN_MODE_CONNECTABLE
+                    || scanMode == BluetoothAdapter.SCAN_MODE_NONE) {
+                Toast.makeText(context, "Device is invisible", Toast.LENGTH_SHORT).show();
+            }
+        }
     };
 }

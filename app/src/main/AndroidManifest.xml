@@ -22,6 +22,11 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".SettingsFragment">
+            <intent-filter>
+                <category android:name="android.intent.category.PREFERENCE"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -3,6 +3,12 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/set_visible"
+        android:title="Be visible to nearby devices for 2min"
+        android:icon="@drawable/ic_visibility_white_48dp"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/sys_settings"
         android:title="Settings"
         app:showAsAction="never"/>
@@ -10,6 +16,11 @@
     <item
         android:id="@+id/about"
         android:title="About"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/feedback"
+        android:title="Feedback"
         app:showAsAction="never"/>
 
 </menu>

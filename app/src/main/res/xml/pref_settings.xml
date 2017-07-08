@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="key_category_switch"
+        android:title="Switches">
+
+        <SwitchPreference
+            android:key="key_settings_display_paired_devices"
+            android:title="Display Paired Devices"
+            android:summary="Devices paired already"
+            android:defaultValue="false"
+            android:enabled="false"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
