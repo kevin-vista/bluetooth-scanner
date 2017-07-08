@@ -6,6 +6,12 @@
         android:title="Switches">
 
         <SwitchPreference
+            android:key="key_settings_use_percentage"
+            android:title="Use Percentage"
+            android:summary="Instead of 'dB'"
+            android:defaultValue="false"/>
+
+        <SwitchPreference
             android:key="key_settings_display_paired_devices"
             android:title="Display Paired Devices"
             android:summary="Devices paired already"

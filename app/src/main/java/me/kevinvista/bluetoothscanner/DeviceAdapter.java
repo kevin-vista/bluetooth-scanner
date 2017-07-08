@@ -1,5 +1,8 @@
 package me.kevinvista.bluetoothscanner;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,8 @@ import java.util.List;
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHolder> {
 
     public List<Device> mDeviceList;
+
+    boolean usePercentage;
 
     static class DeviceHolder extends RecyclerView.ViewHolder {
 
@@ -45,7 +50,15 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
         Device device = mDeviceList.get(position);
         holder.textDeviceName.setText(device.getName());
         holder.textDeviceAddress.setText("MAC: " + device.getAddress());
-        holder.textDeviceSignal.setText(device.getSignal() + "dB");
+        Context applicationContext = MainActivity.getContextOfApplication();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+        usePercentage = sharedPreferences.getBoolean("key_settings_use_percentage", false);
+        if (usePercentage) {
+            holder.textDeviceSignal.setText(device.getSignal() + 100 + "%");
+        } else {
+            holder.textDeviceSignal.setText(device.getSignal() + "dB");
+        }
+
         //holder.textDevicePaired.setText(device.isPaired() + "");
     }
 

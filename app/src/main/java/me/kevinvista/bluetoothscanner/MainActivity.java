@@ -3,7 +3,6 @@ package me.kevinvista.bluetoothscanner;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -33,6 +31,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
     public static final String TAG = "MainActivity";
+
+    public static Context contextOfApplication;
 
     private int ACCESS_COARSE_LOCATION_CODE = 1;
 
@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        contextOfApplication = getApplicationContext();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initView();
@@ -136,7 +138,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 IntentFilter intentFilter = new IntentFilter();
                 intentFilter.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
                 registerReceiver(scanModeReceiver, intentFilter);
-            case R.id.sys_settings:
+            case R.id.settings:
+                /*
+                //go to system settings
                 Intent settingsIntent = new Intent();
                 settingsIntent.setAction(Settings.ACTION_BLUETOOTH_SETTINGS);
                 settingsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -146,8 +150,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     e.printStackTrace();
                     Toast.makeText(this, "Failed going to settings", Toast.LENGTH_SHORT).show();
                 }
-                //Intent intent = new Intent(this, SettingsFragment.class);
-                //startActivity(intent);
+                */
+                Intent intent = new Intent(this, SettingsFragment.class);
+                startActivity(intent);
                 break;
             case R.id.about:
                 Toast.makeText(this, "Written by kevin-vista", Toast.LENGTH_SHORT).show();
@@ -263,4 +268,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         }
     };
+
+    public static Context getContextOfApplication() {
+        return contextOfApplication;
+    }
+
 }

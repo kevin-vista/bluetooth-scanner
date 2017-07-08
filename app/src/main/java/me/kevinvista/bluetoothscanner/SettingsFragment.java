@@ -10,6 +10,8 @@ import android.preference.PreferenceFragment;
 
 public class SettingsFragment extends Activity {
 
+    public final String SETTINGS_PREFERENCES_FILE_NAME = "SETTINGS_PREFERENCES";
+
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -9,7 +9,7 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/sys_settings"
+        android:id="@+id/settings"
         android:title="Settings"
         app:showAsAction="never"/>
 

@@ -37,7 +37,7 @@
             android:text="N/A"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:layout_margin="12dp"
+            android:layout_margin="13dp"
             android:textSize="24sp"/>
         <TextView
             android:id="@+id/text_paired"
