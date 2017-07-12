@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         if (Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
                     PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Requesting Permission", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "获取权限", Toast.LENGTH_SHORT).show();
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, ACCESS_COARSE_LOCATION_CODE);
             }
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Intent visibleIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                 visibleIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 120);
                 startActivity(visibleIntent);
-                Toast.makeText(this, "Please turn back to grant permission", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "请返回应用以授权", Toast.LENGTH_LONG).show();
                 //register scanModeReceiver
                 scanModeReceiverRegistered = true;
                 IntentFilter intentFilter = new IntentFilter();
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 registerReceiver(scanModeReceiver, intentFilter);
             case R.id.settings:
                 /*
-                //go to system settings
+                //Go to system settings
                 Intent settingsIntent = new Intent();
                 settingsIntent.setAction(Settings.ACTION_BLUETOOTH_SETTINGS);
                 settingsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, SCAN_MODE_ERROR);
             if (scanMode == BluetoothAdapter.SCAN_MODE_CONNECTABLE
                     || scanMode == BluetoothAdapter.SCAN_MODE_NONE) {
-                Toast.makeText(context, "Device is invisible", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "设备对外不可见", Toast.LENGTH_SHORT).show();
             }
         }
     };

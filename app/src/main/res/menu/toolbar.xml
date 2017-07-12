@@ -4,23 +4,23 @@
 
     <item
         android:id="@+id/set_visible"
-        android:title="Be visible to nearby devices for 2min"
+        android:title="2分钟内对外可见"
         android:icon="@drawable/ic_visibility_white_48dp"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/settings"
-        android:title="Settings"
+        android:title="设置"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/about"
-        android:title="About"
+        android:title="关于"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/feedback"
-        android:title="Feedback"
+        android:title="反馈"
         app:showAsAction="never"/>
 
 </menu>

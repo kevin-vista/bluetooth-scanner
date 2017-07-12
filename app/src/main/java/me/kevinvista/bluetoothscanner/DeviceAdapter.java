@@ -51,12 +51,13 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
         holder.textDeviceName.setText(device.getName());
         holder.textDeviceAddress.setText("MAC: " + device.getAddress());
         Context applicationContext = MainActivity.getContextOfApplication();
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         usePercentage = sharedPreferences.getBoolean("key_settings_use_percentage", false);
         if (usePercentage) {
             holder.textDeviceSignal.setText(device.getSignal() + 100 + "%");
         } else {
-            holder.textDeviceSignal.setText(device.getSignal() + "dB");
+            holder.textDeviceSignal.setText(device.getSignal() + "dBm");
         }
 
         //holder.textDevicePaired.setText(device.isPaired() + "");

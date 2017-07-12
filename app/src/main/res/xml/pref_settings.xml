@@ -3,18 +3,18 @@
 
     <PreferenceCategory
         android:key="key_category_switch"
-        android:title="Switches">
+        android:title="开关">
 
         <SwitchPreference
             android:key="key_settings_use_percentage"
-            android:title="Use Percentage"
-            android:summary="Instead of 'dB'"
+            android:title="使用百分比格式"
+            android:summary="代替 dBm"
             android:defaultValue="false"/>
 
         <SwitchPreference
             android:key="key_settings_display_paired_devices"
-            android:title="Display Paired Devices"
-            android:summary="Devices paired already"
+            android:title="显示已配对设备"
+            android:summary="暂时不可用"
             android:defaultValue="false"
             android:enabled="false"/>
 
